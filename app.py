@@ -9,24 +9,31 @@ def index():
  
 @app.route('/predict-emotion', methods=["POST"])
 def predict_emotion():
-    print(request.json)
+    
+    # Get Input Text from POST Request
     input_text = request.json.get("text")  
-    print(input_text)
-
+    
     if not input_text:
-        return jsonify({
-            "status": "error",
-            "message": "Please enter some text to predict emotion!"
-        }), 400
+        # Response to send if the input_text is undefined
+        response = {
+                    "status": "error",
+                    "message": "Please enter some text to predict emotion!"
+                  }
+        return jsonify(response)
     else:  
         predicted_emotion = predict(input_text)
-        print(predicted_emotion)
-        return jsonify({
-            "data": {
-                "predicted_emotion": predicted_emotion
-            },
-            "status": "success"
-        }), 200
+        
+        # Response to send if the input_text is not undefined
+        response = {
+                    "status": "success",
+                    "data": {
+                            "predicted_emotion": predicted_emotion,
+                            "predicted_emotion_img_url": predicted_emotion_img_url
+                            }  
+                   }
+
+        # Send Response         
+        return jsonify(response)
      
      
 if __name__ == '__main__':

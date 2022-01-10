@@ -37,10 +37,15 @@ $(function () {
                 
                 // Result Received From Flask ----->JavaScript
                 predicted_emotion = result.data.predicted_emotion
+                emo_url = result.data.predicted_emotion_img_url
 
+                
                 // Display Result Using JavaScript----->HTML
-                $("#prediction").html(result.data.predicted_emotion)
+                $("#prediction").html(predicted_emotion)
                 $('#prediction').css("display", "");
+
+                $("#emo_img_url").attr('src', emo_url);
+                $('#emo_img_url').css("display", "");
             },
             error: function (result) {
                 alert(result.responseJSON.message)

@@ -25,12 +25,20 @@ oov_tok = "<OOV>"
 tokenizer = Tokenizer(num_words=vocab_size, oov_token=oov_tok)
 tokenizer.fit_on_texts(training_sentences)
 
-emo_code = {"anger": 0, "fear": 1, "joy": 2, "love": 3, "sadness": 4, "surprise": 5}
+emo_code_url = {
+    "anger": [0, "./static/assets/emoticons/Anger.png"],
+    "fear": [1,"./static/assets/emoticons/Fear.png" ],
+    "joy": [2, "./static/assets/emoticons/Joy.png"],
+    "love": [3, "./static/assets/emoticons/Love.png"],
+    "sadness": [4, "./static/assets/emoticons/Sadness.png"],
+    "surprise": [5, "./static/assets/emoticons/Surprise.png"]
+    }
 
 def predict(text):
 
     predicted_emotion=""
-
+    predicted_emotion_img_url=""
+    
     if  text!="":
         sentence = []
         sentence.append(text)
@@ -44,7 +52,8 @@ def predict(text):
 
         predicted_class_label = np.argmax(model.predict(testing_padded), axis=-1)        
             
-        for key, value in emo_code.items():
-            if value==predicted_class_label:                
+        for key, value in emo_code_url.items():
+            if value[0]==predicted_class_label:
+                predicted_emotion_img_url=value[1]
                 predicted_emotion=key
-        return predicted_emotion
+        return predicted_emotion, predicted_emotion_img_url
